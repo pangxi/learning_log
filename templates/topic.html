@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>查看主题及其条目</title>
+</head>
+<body>
+{% extends 'base.html' %}
+
+{% block header %}
+    <h2>{{ topic }}</h2>
+{% endblock header %}
+
+{% block content %}
+    <p><a href="{% url 'learning_logs:new_entry' topic.id %}">add new entry</a></p>
+
+    {% for entry in entries %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <!-- 竖线 表示模板过滤器——对模板变量的值进行修改的函数 -->
+                <h3>
+                    {{ entry.data_added|date:'M d,Y H:i' }}
+                    <small>
+                        <a href="{% url 'learning_logs:edit_entry' entry.id %}">edit entry</a>
+                    </small>
+                </h3>
+            </div>
+            <div class="panel-body">
+                {{ entry.text|linebreaks }}
+            </div>
+        </div><!-- panel -->
+    {% empty %}
+        There are no entries for this topic yet.
+    {% endfor %}
+{% endblock content %}
+</body>
+</html>
